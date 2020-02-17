@@ -135,4 +135,4 @@ const mapStateProps = state => ({
   errors: state.errors
 });
 
-export default connect(null, { CreateProject })(AddProject);
+export default connect(mapStateProps, { CreateProject })(AddProject);
