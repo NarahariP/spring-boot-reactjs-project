@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ERRORS } from "./types";
+import { GET_ERRORS, GET_PROJECTS } from "./types";
 
 export const CreateProject = (project, history) => async dispath => {
   try {
@@ -14,4 +14,12 @@ export const CreateProject = (project, history) => async dispath => {
       payload: error.response.data
     });
   }
+};
+
+export const getProjects = () => async dispath => {
+  const res = await axios.get("http://localhost:8080/projects");
+  dispath({
+    type: GET_PROJECTS,
+    payload: res.data
+  });
 };
