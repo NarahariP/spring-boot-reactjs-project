@@ -3,10 +3,7 @@ import { GET_ERRORS, GET_PROJECTS, GET_PROJECT, DELETE_PROJECT } from "./types";
 
 export const CreateProject = (project, history) => async dispath => {
   try {
-    const res = await axios.post(
-      "http://localhost:8080/projects/add-project",
-      project
-    );
+    await axios.post("http://localhost:8080/projects/add-project", project);
     history.push("/dashboard");
     dispath({
       type: GET_ERRORS,
@@ -43,9 +40,15 @@ export const getProject = (id, history) => async dispath => {
 };
 
 export const deleteProject = id => async dispath => {
-  await axios.delete(`http://localhost:8080/projects/${id}`);
-  dispath({
-    type: DELETE_PROJECT,
-    payload: id
-  });
+  if (
+    window.confirm(
+      "Are you sure? this will delete the project and all the data releated to it."
+    )
+  ) {
+    await axios.delete(`http://localhost:8080/projects/${id}`);
+    dispath({
+      type: DELETE_PROJECT,
+      payload: id
+    });
+  }
 };

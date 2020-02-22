@@ -4,12 +4,8 @@ import { Link } from "react-router-dom";
 const CreateProjectButton = () => {
   return (
     <div>
-      <Link
-        to="/addProject"
-        href="ProjectForm.html"
-        className="btn btn-lg btn-info"
-      >
-        Create Project
+      <Link to="/addProject" className="fas fa-plus-circle btn btn-lg btn-info">
+        &nbsp;Create Project
       </Link>
     </div>
   );
