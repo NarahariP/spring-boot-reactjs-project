@@ -33,5 +33,10 @@ export const getBacklog = projectIdentifier => async dispath => {
       type: GET_BACKLOG,
       payload: res.data
     });
-  } catch (error) {}
+  } catch (error) {
+    dispath({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
 };
