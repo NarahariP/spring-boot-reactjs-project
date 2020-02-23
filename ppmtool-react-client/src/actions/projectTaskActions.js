@@ -58,3 +58,26 @@ export const getProjectTask = (
     history.push("/dashboard");
   }
 };
+
+export const updateProjectTask = (
+  projectIdentifier,
+  projectTask,
+  history
+) => async dispath => {
+  try {
+    await axios.post(
+      `http://localhost:8080/backlog/${projectIdentifier}`,
+      projectTask
+    );
+    history.push(`/projectBoard/${projectIdentifier}`);
+    dispath({
+      type: GET_ERRORS,
+      payload: {}
+    });
+  } catch (error) {
+    dispath({
+      type: GET_ERRORS,
+      payload: error.response.data
+    });
+  }
+};

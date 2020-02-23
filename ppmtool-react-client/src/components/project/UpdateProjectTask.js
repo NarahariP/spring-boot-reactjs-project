@@ -2,16 +2,51 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { connect } from "react-redux";
-import { getProjectTask } from "../../actions/projectTaskActions";
+import {
+  getProjectTask,
+  updateProjectTask
+} from "../../actions/projectTaskActions";
 import PropTypes from "prop-types";
 
 class UpdateProjectTask extends Component {
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super();
     this.state = {
+      id: "",
+      projectSequence: "",
+      summary: "",
+      acceptanceCriteria: "",
+      status: "",
+      priority: "",
+      dueDate: "",
+      projectIdentifier: "",
       errors: {}
     };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    const updateProjectTask = {
+      id: this.state.id,
+      projectSequence: this.state.projectSequence,
+      summary: this.state.summary,
+      acceptanceCriteria: this.state.acceptanceCriteria,
+      status: this.state.status,
+      priority: this.state.priority,
+      dueDate: this.state.dueDate,
+      projectIdentifier: this.state.projectIdentifier
+    };
+    this.props.updateProjectTask(
+      this.state.projectIdentifier,
+      updateProjectTask,
+      this.props.history
+    );
   }
 
   componentDidMount() {
@@ -23,8 +58,35 @@ class UpdateProjectTask extends Component {
     );
   }
 
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+    const {
+      id,
+      projectSequence,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      projectIdentifier
+    } = nextProps.project_task;
+    this.setState({
+      id,
+      projectSequence,
+      summary,
+      acceptanceCriteria,
+      status,
+      priority,
+      dueDate,
+      projectIdentifier
+    });
+  }
+
   render() {
     const { projectIdentifier } = this.props.match.params;
+    const { errors } = this.state;
     return (
       <div className="update-projectTask">
         <div className="container">
@@ -35,22 +97,32 @@ class UpdateProjectTask extends Component {
                 className="fas fa-backward btn btn-light"
               ></Link>
               <h5 className="display-4 text-center">Update Project Task</h5>
-              <p className="lead text-center">Project Name + Project Code</p>
+              <p className="lead text-center">
+                {this.state.projectIdentifier} + {this.state.projectSequence}
+              </p>
               <form onSubmit={this.onSubmit}>
                 <div className="form-group">
                   <input
                     type="text"
-                    className={classnames("form-control form-control-lg")}
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.summary
+                    })}
                     name="summary"
                     placeholder="Project Task summary"
+                    value={this.state.summary}
+                    onChange={this.onChange}
                   />
-                  <div className="invalid-feedback"></div>
+                  {errors.summary && (
+                    <div className="invalid-feedback">{errors.summary}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <textarea
                     className="form-control form-control-lg"
                     placeholder="Acceptance Criteria"
                     name="acceptanceCriteria"
+                    value={this.state.acceptanceCriteria}
+                    onChange={this.onChange}
                   ></textarea>
                 </div>
                 <h6>Due Date</h6>
@@ -59,12 +131,16 @@ class UpdateProjectTask extends Component {
                     type="date"
                     className="form-control form-control-lg"
                     name="dueDate"
+                    value={this.state.dueDate}
+                    onChange={this.onChange}
                   />
                 </div>
                 <div className="form-group">
                   <select
                     className="form-control form-control-lg"
                     name="priority"
+                    value={this.state.priority}
+                    onChange={this.onChange}
                   >
                     <option value={0}>Select Priority</option>
                     <option value={1}>High</option>
@@ -77,6 +153,8 @@ class UpdateProjectTask extends Component {
                   <select
                     className="form-control form-control-lg"
                     name="status"
+                    value={this.state.status}
+                    onChange={this.onChange}
                   >
                     <option value="">Select Status</option>
                     <option value="TO_DO">TO DO</option>
@@ -99,11 +177,16 @@ class UpdateProjectTask extends Component {
 
 UpdateProjectTask.propTypes = {
   getProjectTask: PropTypes.func.isRequired,
-  project_task: PropTypes.object.isRequired
+  project_task: PropTypes.object.isRequired,
+  updateProjectTask: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  project_task: state.errors
+  project_task: state.backlog.project_task,
+  errors: state.errors
 });
 
-export default connect(mapStateToProps, { getProjectTask })(UpdateProjectTask);
+export default connect(mapStateToProps, { getProjectTask, updateProjectTask })(
+  UpdateProjectTask
+);
