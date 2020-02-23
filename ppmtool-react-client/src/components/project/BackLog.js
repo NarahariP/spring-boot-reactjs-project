@@ -11,7 +11,6 @@ class BackLog extends Component {
     let inprogreeItems = [];
     let completedItems = [];
     tasks.forEach(element => {
-      console.log(element);
       if (element.props.project_task.status === "TO_DO") {
         todoItems.push(element);
       } else if (element.props.project_task.status === "IN_PROGRESS") {

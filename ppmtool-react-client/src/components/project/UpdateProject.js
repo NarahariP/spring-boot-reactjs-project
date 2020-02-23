@@ -61,7 +61,6 @@ class UpdateProject extends Component {
       startDate: this.state.startDate,
       endDate: this.state.endDate
     };
-    console.log(updateProject);
     this.props.CreateProject(updateProject, this.props.history);
   }
 
