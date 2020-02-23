@@ -1,5 +1,10 @@
 import axios from "axios";
-import { GET_ERRORS, GET_BACKLOG, GET_PROJECT_TASK } from "./types";
+import {
+  GET_ERRORS,
+  GET_BACKLOG,
+  GET_PROJECT_TASK,
+  DELETE_PROJECT_TASK
+} from "./types";
 
 export const addProjectTask = (
   projectIdentifier,
@@ -78,6 +83,25 @@ export const updateProjectTask = (
     dispath({
       type: GET_ERRORS,
       payload: error.response.data
+    });
+  }
+};
+
+export const deleteProjectTask = (
+  projectIdentifier,
+  projectTaskId
+) => async dispath => {
+  if (
+    window.confirm(
+      `You are deleting Project Task ${projectTaskId}, this action cannot be undone.`
+    )
+  ) {
+    await axios.delete(
+      `http://localhost:8080/backlog/${projectIdentifier}/${projectTaskId}`
+    );
+    dispath({
+      type: DELETE_PROJECT_TASK,
+      payload: projectTaskId
     });
   }
 };

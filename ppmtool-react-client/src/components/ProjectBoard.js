@@ -33,7 +33,7 @@ class ProjectBoard extends Component {
       if (projectTasks.length < 1) {
         if (errors.message) {
           return (
-            <div class="alert alert-danger text-center" role="alert">
+            <div className="alert alert-danger text-center" role="alert">
               {errors.message}
             </div>
           );
