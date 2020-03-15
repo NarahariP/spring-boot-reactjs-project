@@ -22,7 +22,6 @@ export default function(state = initialState, action) {
         project_task: action.payload
       };
     case DELETE_PROJECT_TASK:
-      console.log("data from ");
       return {
         ...state,
         project_tasks: state.project_tasks.filter(

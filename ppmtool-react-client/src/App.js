@@ -11,6 +11,11 @@ import UpdateProject from "./components/project/UpdateProject";
 import ProjectBoard from "./components/ProjectBoard";
 import AddProjectTask from "./components/project/AddProjectTask";
 import UpdateProjectTask from "./components/project/UpdateProjectTask";
+import Landing from "./components/layout/Landing";
+import Register from "./components/userManagement/Register";
+import Login from "./components/userManagement/Login";
+import jwt_decode from "jwt-decode";
+import setJWToken from "./securityUtils/setJWToken";
 
 function App() {
   return (
@@ -18,6 +23,9 @@ function App() {
       <Router>
         <div className="App">
           <Header />
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/addProject" component={AddProject} />
           <Route exact path="/updateProject/:id" component={UpdateProject} />
