@@ -16,6 +16,24 @@ import Register from "./components/userManagement/Register";
 import Login from "./components/userManagement/Login";
 import jwt_decode from "jwt-decode";
 import setJWToken from "./securityUtils/setJWToken";
+import { SET_CUTRRENT_USER } from "./actions/types";
+import { logout } from "./actions/securityActions";
+
+const jwtToken = localStorage.jwtToken;
+if (jwtToken) {
+  console.log("inside");
+  setJWToken(jwtToken);
+  const jwtTokenDecoded = jwt_decode(jwtToken);
+  store.dispatch({
+    type: SET_CUTRRENT_USER,
+    payload: jwtTokenDecoded
+  });
+  const currentTime = Date.now() / 1000;
+  if (jwtTokenDecoded.exp < currentTime) {
+    store.dispatch(logout());
+    window.location.href = "/";
+  }
+}
 
 function App() {
   return (

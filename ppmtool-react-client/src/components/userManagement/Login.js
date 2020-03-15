@@ -39,6 +39,7 @@ class Login extends Component {
   }
 
   render() {
+    const { errors } = this.state;
     return (
       <div className="login">
         <div className="container">
@@ -49,22 +50,47 @@ class Login extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className={classnames(
+                      "form-control form-control-lg",
+                      {
+                        "is-invalid": errors.username
+                      },
+                      {
+                        "is-invalid": errors.message
+                      }
+                    )}
                     placeholder="Email Address"
                     name="username"
                     value={this.state.username}
                     onChange={this.onChange}
                   />
+                  {errors.username && (
+                    <div className="invalid-feedback">{errors.username}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <input
                     type="password"
-                    className="form-control form-control-lg"
+                    className={classnames(
+                      "form-control form-control-lg",
+                      {
+                        "is-invalid": errors.password
+                      },
+                      {
+                        "is-invalid": errors.message
+                      }
+                    )}
                     placeholder="Password"
                     name="password"
                     value={this.state.password}
                     onChange={this.onChange}
                   />
+                  {errors.password && (
+                    <div className="invalid-feedback">{errors.password}</div>
+                  )}
+                  {errors.message && (
+                    <div className="invalid-feedback">{errors.message}</div>
+                  )}
                 </div>
                 <input
                   type="submit"
@@ -81,7 +107,8 @@ class Login extends Component {
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  security: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
