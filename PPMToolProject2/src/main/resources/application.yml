@@ -1,0 +1,14 @@
+logging:
+  level:
+    org.springframework: info
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ppmtool
+    username: root
+    password: root
